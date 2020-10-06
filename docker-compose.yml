@@ -22,3 +22,6 @@ services:
       MYSQL_USER: admin
       MYSQL_PASSWORD: admin123
       MYSQL_ROOT_PASSWORD: admin123
+    volumes:
+        - ./mysql:/var/lib/mysql
+        - ./sql:/docker-entrypoint-initdb.d:ro
