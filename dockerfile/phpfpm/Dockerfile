@@ -1,5 +1,7 @@
 FROM php:7.3-fpm
 
+COPY --from=composer /usr/bin/composer /usr/bin/composer
+
 RUN apt-get update && apt-get install -y \
   gzip \
   libbz2-dev \
@@ -41,3 +43,16 @@ RUN docker-php-ext-install \
   zip
 
 RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
+
+RUN groupadd -g 1000 app \
+ && useradd -g 1000 -u 1000 -d /var/www -s /bin/bash app
+
+RUN mkdir -p /var/www/html \
+   && chown -R app:app /var/www
+
+USER app:app
+
+VOLUME /var/www
+
+WORKDIR /var/www/html
+
